@@ -1,0 +1,45 @@
+import React, { useState } from "react";
+
+export default function MilkDashboard() {
+  const [deliveries, setDeliveries] = useState([
+    { date: "2025-09-25", farm: "Green Farm", liters: 120 },
+    { date: "2025-09-26", farm: "Sunrise Dairy", liters: 200 }
+  ]);
+
+  const [farm, setFarm] = useState("");
+  const [liters, setLiters] = useState("");
+  const [date, setDate] = useState("");
+
+  function addDelivery(e) {
+    e.preventDefault();
+    if (!farm || !liters || !date) return;
+    setDeliveries([{ date, farm, liters: Number(liters) }, ...deliveries]);
+    setFarm(""); setLiters(""); setDate("");
+  }
+
+  return (
+    <div style={{ fontFamily: "Arial", padding: 20 }}>
+      <h2>Milk Supply Dashboard</h2>
+
+      <form onSubmit={addDelivery} style={{ marginBottom: 20 }}>
+        <input placeholder="Farm" value={farm} onChange={e=>setFarm(e.target.value)} />
+        <input type="number" placeholder="Liters" value={liters} onChange={e=>setLiters(e.target.value)} />
+        <input type="date" value={date} onChange={e=>setDate(e.target.value)} />
+        <button>Add</button>
+      </form>
+
+      <table border="1" cellPadding="5">
+        <thead>
+          <tr><th>Date</th><th>Farm</th><th>Liters</th></tr>
+        </thead>
+        <tbody>
+          {deliveries.map((d, i) => (
+            <tr key={i}>
+              <td>{d.date}</td><td>{d.farm}</td><td>{d.liters} L</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
